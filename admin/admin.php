@@ -38,6 +38,10 @@ class AdminMenu
                 'render_callback' => array('Admin_Settings', 'render_content'),
                 'save_callback' => array('Admin_Settings', 'save')
             ),
+            'devices' => array(
+                'title' => 'Devices',
+                'render_callback' => array('Admin_Devices', 'render_content')
+            ),
         );
     }
 

@@ -26,6 +26,7 @@ class PushbulletPlugin
         define('PUSHBULLET_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
         $this->get_services();
+        $this->get_includes();
         $this->get_admin();
 
         // Plugin activation
@@ -46,6 +47,7 @@ class PushbulletPlugin
     private function get_admin()
     {
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_settings.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_devices.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin.php';
     }
 
@@ -53,6 +55,12 @@ class PushbulletPlugin
     {
 
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'services/devices.php';
+    }
+
+    private function get_includes()
+    {
+        require_once PUSHBULLET_PLUGIN_DIR . 'includes/devices_list.php';
     }
 }
 
