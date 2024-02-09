@@ -5,13 +5,14 @@ class AdminMenu
 
     protected $current_tab;
     protected $menu_tabs;
+    protected $validated = false;
 
     public function __construct()
     {
         add_action('admin_menu', array($this, 'render_admin_menu'));
     }
 
-    public function render_admin_menu()
+    public function render_admin_menu(): void
     {
         add_menu_page(
             'Pushbullet Configurator',
@@ -24,13 +25,13 @@ class AdminMenu
         );
     }
 
-    public function render_admin_page()
+    public function render_admin_page(): void
     {
         $this->set_menu_tabs();
         $this->render_page();
     }
 
-    public function set_menu_tabs()
+    public function set_menu_tabs(): void
     {
         $this->menu_tabs = array(
             'access_token' => array(
@@ -45,7 +46,7 @@ class AdminMenu
         );
     }
 
-    public function render_tabs()
+    public function render_tabs(): void
     {
         ?>
         <h2 class="nav-tab-wrapper">
@@ -63,18 +64,23 @@ class AdminMenu
         <?php
     }
 
-    public function render_page()
+    public function render_page(): void
     {
         $this->get_current_tab();
 
         if(isset($_POST['submit']))
         {
-            call_user_func($this->menu_tabs[$this->current_tab]['save_callback']);
+            $response = call_user_func($this->menu_tabs[$this->current_tab]['save_callback']);
+            $this->validated = $response;
         }
 
         ?>
 
         <div class="wrap">
+            <?php if($this->is_validated()) {
+                echo "<div class='notice notice-success is-dismissible'><p>" . __('Settings saved') . "</p></div>";
+
+            }?>
             <h2>Pushbullet Configurator</h2>
             <?php $this->render_tabs(); ?>
             <div>
@@ -91,8 +97,13 @@ class AdminMenu
         <?php
     }
 
-    public function get_current_tab()
+    public function get_current_tab(): void
     {
         $this->current_tab = sanitize_text_field($_GET['tab'] ?? array_key_first($this->menu_tabs));
+    }
+
+    public function is_validated(): bool
+    {
+        return $this->validated;
     }
 }

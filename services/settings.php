@@ -15,6 +15,14 @@ class Settings_Service
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )"
         );
+
+        self::init_db();
+    }
+
+    public static function init_db(): void
+    {
+        global $wpdb;
+        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "token"]);
     }
 
     public static function empty_db(): void
@@ -45,7 +53,11 @@ class Settings_Service
     {
         global $wpdb;
 
-        $wpdb->insert("{$wpdb->prefix}pushbullet_config", $data);
+        $query = $wpdb->prepare(
+            "INSERT INTO {$wpdb->prefix}pushbullet_config (name, value) VALUES (%s, %s)",
+            $data["name"],
+            $data["value"]);
+        $wpdb->query($query);
         return $wpdb->insert_id;
 
 
@@ -55,7 +67,12 @@ class Settings_Service
     public static function update($name, $data): void
     {
         global $wpdb;
-        $wpdb->update("{$wpdb->prefix}pushbullet_config", $data, ['name' => $name]);
+
+        $query = $wpdb->prepare(
+            "UPDATE {$wpdb->prefix}pushbullet_config SET value = %s WHERE name = %s;",
+            $data["value"],
+            $name);
+        $wpdb->query($query);
     }
 
     public static function delete_data($ids): void
