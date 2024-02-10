@@ -25,6 +25,7 @@ class Settings_Service
         $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "token"]);
         $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "phone_number"]);
         $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "message"]);
+        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "default_device"]);
     }
 
     public static function empty_db(): void
@@ -61,6 +62,22 @@ class Settings_Service
     {
         global $wpdb;
         return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}pushbullet_config WHERE name = 'phone_number'")[0];
+    }
+
+    public static function find_default_device(): stdClass
+    {
+        global $wpdb;
+        return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}pushbullet_config WHERE name = 'default_device'")[0];
+    }
+
+    public static function set_default_device($iden): void
+    {
+        global $wpdb;
+
+        $query = $wpdb->prepare(
+            "UPDATE {$wpdb->prefix}pushbullet_config SET value = %s WHERE name = 'default_device';",
+            $iden);
+        $wpdb->query($query);
     }
 
     public static function create($data): int

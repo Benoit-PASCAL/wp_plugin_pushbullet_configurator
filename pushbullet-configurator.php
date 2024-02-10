@@ -60,6 +60,7 @@ class PushbulletPlugin
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/devices.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/pushes.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'services/texts.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/tracking.php';
     }
 

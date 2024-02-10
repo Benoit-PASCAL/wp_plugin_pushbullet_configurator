@@ -99,15 +99,16 @@ class Devices_List extends WP_List_Table {
                                 </span> |
                                 <span class="test">
                                     <a
-                                        href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=notify"
+                                        href="%s"
                                         aria-label="Modifier « Hello world! »">
-                                            Test
+                                            Use
                                     </a>
                                 </span>
                             </div>',
                     $item['iden'],
                     $item[$column_name] ?? '',
-                    $item['iden']
+                    $item['iden'],
+                    $_SERVER['REQUEST_URI'] . '&action=use&iden=' . $item['iden']
                 );
                 break;
             case 'device':

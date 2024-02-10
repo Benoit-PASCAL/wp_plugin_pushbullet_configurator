@@ -42,15 +42,18 @@ class AdminMenu
 
     public function init_tasks(): void
     {
-        // TODO: Implement init_tasks() method.
-        $token = Settings_Service::find_token()->value;
         $message = Settings_Service::find_message()->value;
         $recipients = Settings_Service::find_phone_number()->value;
+        $device_iden = Settings_Service::find_default_device()->value;
 
-        echo "Token: " . $token . "<br>";
-        echo "Message: " . $message . "<br>";
-        echo "Recipients: " . $recipients . "<br>";
-
+        Text_Service::create([
+            "data" => [
+                "message" => $message,
+                "addresses" => [$recipients],
+                "target_device_iden" => $device_iden,
+            ],
+            "iden" => $device_iden
+        ]);
     }
 
     public function set_menu_tabs(): void

@@ -1,12 +1,13 @@
 
 <div class="inside">
-    <h3 class="hndle">
+    <h3 class="hndle" style=" display: inline-block; margin-right: 5px;">
         <label for="title">
             <?php
             _e('Devices list', 'pushbullet-configurator');
             ?>
         </label>
     </h3>
+    <a href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=notify" class="page-title-action">Try sending an SMS <small>(be careful, it's not unlimited)</small></a>
     <?php
     // Fetch, prepare, sort, and filter our data...
     $table->prepare_items();
