@@ -23,12 +23,34 @@ class AdminMenu
             'dashicons-admin-generic',
             100
         );
+
+        add_submenu_page(
+            null,
+            'Pushbullet Configurator',
+            'Settings',
+            'read',
+            'notify',
+            array($this, 'init_tasks')
+        );
     }
 
     public function render_admin_page(): void
     {
         $this->set_menu_tabs();
         $this->render_page();
+    }
+
+    public function init_tasks(): void
+    {
+        // TODO: Implement init_tasks() method.
+        $token = Settings_Service::find_token()->value;
+        $message = Settings_Service::find_message()->value;
+        $recipients = Settings_Service::find_phone_number()->value;
+
+        echo "Token: " . $token . "<br>";
+        echo "Message: " . $message . "<br>";
+        echo "Recipients: " . $recipients . "<br>";
+
     }
 
     public function set_menu_tabs(): void
@@ -54,7 +76,6 @@ class AdminMenu
 
             foreach ($this->menu_tabs as $tab => $tab_data) {
                 $active = $this->current_tab == $tab ? 'nav-tab-active' : '';
-                //echo $tab;
                 $title = $tab_data['title'];
                 echo "<a class='nav-tab {$active}' href='?page=pushbullet-configurator&tab={$tab}'>{$title}</a>";
             }

@@ -38,8 +38,10 @@ class PushbulletPlugin
         // Plugin uninstall
         register_uninstall_hook(__FILE__, array('Settings_Service', 'delete_db'));
 
-        if(is_admin()) {
+        // Add shortcode to track forms
+        add_shortcode('pushbullet_tracker', array('Tracking_Service', 'track_form'));
 
+        if(is_admin()) {
             new AdminMenu();
         }
     }
@@ -56,6 +58,7 @@ class PushbulletPlugin
 
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/devices.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'services/tracking.php';
     }
 
     private function get_includes()

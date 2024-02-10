@@ -50,11 +50,8 @@ class Devices_List extends WP_List_Table {
     {
         return [
             'nickname' => 'Nickname',
-            'active' => 'Active',
-            'icon' => 'Icon',
-            'manufacturer' => 'Manufacturer',
             'model' => 'Model',
-            'app_version' => 'App Version',
+            'actions' => 'Actions',
         ];
     }
 
@@ -71,6 +68,10 @@ class Devices_List extends WP_List_Table {
             'kind' => 'Kind',
             'remote_files' => 'Remote Files',
             'iden' => 'Iden',
+            'icon' => 'Icon',
+            'app_version' => 'App Version',
+            'active' => 'Active',
+            'manufacturer' => 'Manufacturer',
         ];
     }
 
@@ -85,12 +86,35 @@ class Devices_List extends WP_List_Table {
     public function column_default($item, $column_name): string
     {
         switch ($column_name) {
+            case 'nickname':
+                return sprintf(
+                    '<a href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=%s">%s</a>
+                            <div class="row-actions">
+                                <span class="test">
+                                    <a
+                                        href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=%s"
+                                        aria-label="Modifier « Hello world! »">
+                                            Edit
+                                    </a>
+                                </span> |
+                                <span class="test">
+                                    <a
+                                        href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=notify"
+                                        aria-label="Modifier « Hello world! »">
+                                            Test
+                                    </a>
+                                </span>
+                            </div>',
+                    $item['iden'],
+                    $item[$column_name] ?? '',
+                    $item['iden']
+                );
+                break;
             case 'device':
             case 'active':
             case 'created':
             case 'modified':
             case 'icon':
-            case 'nickname':
             case 'generated_nickname':
             case 'manufacturer':
             case 'model':
@@ -106,7 +130,7 @@ class Devices_List extends WP_List_Table {
                 return $item[$column_name] ?? '';
                 break;
             default:
-                return print_r($item, true);
+                return 'No value';
         }
     }
 
