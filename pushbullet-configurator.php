@@ -50,6 +50,7 @@ class PushbulletPlugin
     {
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_settings.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_devices.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_pushes.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin.php';
     }
 
@@ -58,12 +59,14 @@ class PushbulletPlugin
 
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/devices.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'services/pushes.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/tracking.php';
     }
 
     private function get_includes()
     {
         require_once PUSHBULLET_PLUGIN_DIR . 'includes/devices_list.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'includes/pushes_list.php';
     }
 }
 

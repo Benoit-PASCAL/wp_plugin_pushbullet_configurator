@@ -65,6 +65,10 @@ class AdminMenu
                 'title' => 'Devices',
                 'render_callback' => array('Admin_Devices', 'render_content')
             ),
+            'pushes' => array(
+                'title' => 'Pushes',
+                'render_callback' => array('Admin_Pushes', 'render_content')
+            ),
         );
     }
 
