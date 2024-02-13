@@ -63,12 +63,14 @@ class Tracking_Service
             return new WP_Error('error', 'Please configure the plugin first', array('status' => 412));
         }
 
+        $mail = User_Service::get_data()['email'];
+
         Pushes_Service::create(
             [
                 "type" => "note",
                 "title" => "Alert",
                 "body" => $message,
-                "device_iden" => $device_iden,
+                "email" => $mail,
             ],
         );
 

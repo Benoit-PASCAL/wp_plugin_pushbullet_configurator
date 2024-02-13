@@ -12,8 +12,6 @@ Requires PHP: 7.4
 
 */
 
-
-
 class PushbulletPlugin
 {
     public function __construct()
@@ -61,6 +59,7 @@ class PushbulletPlugin
     {
 
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
+        require_once PUSHBULLET_PLUGIN_DIR . 'services/user.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/devices.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/pushes.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'services/texts.php';
