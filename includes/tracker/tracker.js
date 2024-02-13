@@ -1,8 +1,6 @@
 // Find all forms in page
 var forms = document.forms;
 
-console.log(window.location.origin)
-
 for (const form of forms) {
     form.addEventListener('submit', function(event) {
 
@@ -16,7 +14,7 @@ for (const form of forms) {
         }
 
         // Send data to server
-        $response = fetch(window.location.origin + '/wp-admin/admin.php?page=notify', {
+        fetch(window.location.origin + '/index.php/wp-json/pb-configurator/v1/send-alert', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -41,12 +41,15 @@ class PushbulletPlugin
         // Add shortcode to track forms
         add_shortcode('pushbullet_tracker', array('Tracking_Service', 'track_form'));
 
+        // Add API routes
+        new Tracking_Service();
+
         if(is_admin()) {
             new AdminMenu();
         }
     }
 
-    private function get_admin()
+    private function get_admin(): void
     {
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_settings.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin_devices.php';
@@ -54,7 +57,7 @@ class PushbulletPlugin
         require_once PUSHBULLET_PLUGIN_DIR . 'admin/admin.php';
     }
 
-    private function get_services()
+    private function get_services(): void
     {
 
         require_once PUSHBULLET_PLUGIN_DIR . 'services/settings.php';
@@ -64,7 +67,7 @@ class PushbulletPlugin
         require_once PUSHBULLET_PLUGIN_DIR . 'services/tracking.php';
     }
 
-    private function get_includes()
+    private function get_includes(): void
     {
         require_once PUSHBULLET_PLUGIN_DIR . 'includes/devices_list.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'includes/pushes_list.php';

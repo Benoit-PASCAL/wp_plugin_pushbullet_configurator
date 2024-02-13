@@ -24,36 +24,12 @@ class AdminMenu
             100
         );
 
-        add_submenu_page(
-            null,
-            'Pushbullet Configurator',
-            'Settings',
-            'read',
-            'notify',
-            array($this, 'init_tasks')
-        );
     }
 
     public function render_admin_page(): void
     {
         $this->set_menu_tabs();
         $this->render_page();
-    }
-
-    public function init_tasks(): void
-    {
-        $message = Settings_Service::find_message()->value;
-        $recipients = Settings_Service::find_phone_number()->value;
-        $device_iden = Settings_Service::find_default_device()->value;
-
-        Text_Service::create([
-            "data" => [
-                "message" => $message,
-                "addresses" => [$recipients],
-                "target_device_iden" => $device_iden,
-            ],
-            "iden" => $device_iden
-        ]);
     }
 
     public function set_menu_tabs(): void
