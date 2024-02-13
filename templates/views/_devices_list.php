@@ -7,7 +7,8 @@
             ?>
         </label>
     </h3>
-    <a href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=notify" class="page-title-action">Try sending an SMS <small>(be careful, it's not unlimited)</small></a>
+    <a href="<?= $_SERVER['REQUEST_URI'] . '&action=test-alert&type=push' ?>" class="page-title-action">Try sending a push</a>
+    <a href="<?= $_SERVER['REQUEST_URI'] . '&action=test-alert&type=sms' ?>" class="page-title-action">Try sending an SMS <small>(be careful, it's not unlimited)</small></a>
     <?php
     // Fetch, prepare, sort, and filter our data...
     $table->prepare_items();

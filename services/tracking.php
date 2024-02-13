@@ -31,7 +31,7 @@ class Tracking_Service
         wp_enqueue_script('pushbullet-tracker', plugin_dir_url(__DIR__) . 'includes/tracker/tracker.js', array(), '1.0', true);
     }
 
-    public function send_sms_alert()
+    public static function send_sms_alert()
     {
         $message = Settings_Service::find_message()->value;
         $recipients = Settings_Service::find_phone_number()->value;
@@ -53,7 +53,7 @@ class Tracking_Service
         return rest_ensure_response('it worked');
     }
 
-    public function send_push_alert()
+    public static function send_push_alert()
     {
         $message = Settings_Service::find_message()->value;
         $recipients = Settings_Service::find_phone_number()->value;
