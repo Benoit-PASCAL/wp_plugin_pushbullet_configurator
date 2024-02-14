@@ -68,6 +68,7 @@ class PushbulletPlugin
 
     private function get_includes(): void
     {
+        require_once PUSHBULLET_PLUGIN_DIR . 'includes/settings_form.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'includes/devices_list.php';
         require_once PUSHBULLET_PLUGIN_DIR . 'includes/pushes_list.php';
     }

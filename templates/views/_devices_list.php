@@ -1,4 +1,3 @@
-
 <div class="inside">
     <h3 class="hndle" style=" display: inline-block; margin-right: 5px;">
         <label for="title">
@@ -16,7 +15,7 @@
     ?>
     <form id="tables-filter" method="post">
         <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-        <input type="hidden" name="page" value="<?php echo esc_attr($page); ?>"/>
+        <input type="hidden" name="page" value="<?= esc_attr($page); ?>"/>
         <?php
         if (!empty($tab)) {
             echo '<input type="hidden" name="tab" value="' . esc_attr($tab) . '" />';

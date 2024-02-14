@@ -4,7 +4,8 @@ class Admin_Settings
 {
     public function render_content(): void
     {
-        $table = Settings_Service::findAll();
+        $form = new Settings_Form();
+        $form->prepare_items();
 
         require_once PUSHBULLET_PLUGIN_DIR . 'templates/views/_settings.php';
     }

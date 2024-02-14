@@ -2,32 +2,35 @@
     <table class="form-table" role="presentation">
         <tbody>
         <?php
-
-        foreach ($table as $row) {
-
+            foreach ($form->items as $row) {
         ?>
             <tr>
                 <th scope="row">
-                    <label for="token">
+                    <label for="<?php $form->get_input_name($row) ?>">
                         <?php
-                        _e( ucfirst($row->name), 'pushbullet-configurator');
+                        _e( $form->get_label($row), 'pushbullet-configurator');
+                        ;
                         ?>
                     </label>
                 </th>
                 <td>
-                    <input name="<?= esc_attr($row->name); ?>" type="text" id="<?= esc_attr($row->name); ?>" value="<?= esc_attr($row->value); ?>" class="regular-text">
+                    <?php if($form->get_input_main_type($row) === 'select') { ?>
+                        <select name="<?= esc_attr($form->get_input_name($row)); ?>" id="<?= esc_attr($form->get_input_name($row)); ?>">
+                            <?php
+                                $form->get_select_options($row);
+                            ?>
+                        </select>
+                    <?php } else { ?>
+                        <input name="<?= esc_attr($form->get_input_name($row)); ?>" type="<?= $form->get_input_type($row) ?>" id="<?= esc_attr($form->get_input_name($row)); ?>" value="<?= esc_attr($row->value); ?>" class="regular-text">
+                    <?php } ?>
 
-                    <?php if( $row->name == 'token' ) { ?>
-
+                    <?php if($form->has_description($row)) { ?>
                     <p class="description">
                         <?php
-                        _e('You can create an Access Token on your <a href="https://www.pushbullet.com/#settings/account" target="_blank">Pushbullet account page</a>.', 'pushbullet-configurator');
+                        _e($form->get_description($row), 'pushbullet-configurator');
                         ?>
                     </p>
-
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                 </td>
             </tr>
         <?php
