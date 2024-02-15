@@ -6,6 +6,7 @@ if (!class_exists("WP_List_Table")) {
 
 class Devices_List extends WP_List_Table {
 
+    private $default_device;
     public function __construct($args = array())
     {
         parent::__construct(
@@ -14,6 +15,8 @@ class Devices_List extends WP_List_Table {
                 "plural" => __("Devices")
             )
         );
+
+        $this->default_device = Settings_Service::find_default_device();
     }
 
     /**
@@ -87,29 +90,8 @@ class Devices_List extends WP_List_Table {
     {
         switch ($column_name) {
             case 'nickname':
-                return sprintf(
-                    '<a href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=%s">%s</a>
-                            <div class="row-actions">
-                                <span class="test">
-                                    <a
-                                        href="http://my-local-wordpress.lndo.site/wp-admin/post.php?page=%s"
-                                        aria-label="Modifier « Hello world! »">
-                                            Edit
-                                    </a>
-                                </span> |
-                                <span class="test">
-                                    <a
-                                        href="%s"
-                                        aria-label="Modifier « Hello world! »">
-                                            Use
-                                    </a>
-                                </span>
-                            </div>',
-                    $item['iden'],
-                    $item[$column_name] ?? '',
-                    $item['iden'],
-                    $_SERVER['REQUEST_URI'] . '&action=use&iden=' . $item['iden']
-                );
+                return $this->get_nickname_template($item);
+
                 break;
             case 'device':
             case 'active':
@@ -173,5 +155,45 @@ class Devices_List extends WP_List_Table {
         return [
             "update-data" => __("Update")
         ];
+    }
+
+    public function get_nickname_template($item)
+    {
+        $iden = $item['iden'];
+        $label_text = $item['nickname'] ?? '';
+        $link = $_SERVER['REQUEST_URI'] . '&action=use&iden=' . $item['iden'];
+        $link_block = '
+            <a
+                href="' . $link . '"
+                aria-label="Use ' . $label_text . ' as default device">
+                    Use as default device
+            </a>
+        ';
+
+        if($item['iden'] === $this->default_device->value) {
+            $label_text .= ' (Selected as default device)';
+            $link_block = 'Use as default device';
+        }
+
+
+        return sprintf('
+            <strong>
+                <a href="/wp-admin/post.php?page=%s">%s</a>
+            </strong>
+                <div class="row-actions">
+                    <span class="">
+                        <a
+                            href="/wp-admin/post.php?page=%s"
+                            aria-label="See %s">
+                                See
+                        </a>
+                    </span> |
+                    <span class="">%s</span>
+                </div>',
+            $iden,
+            $label_text,
+            $iden,
+            $item['nickname'],
+            $link_block);
     }
 }
