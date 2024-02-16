@@ -22,14 +22,17 @@ class Devices_Service {
         }
 
         $objects_list = [];
-        $object = new stdClass();
 
-        foreach ($response->decode_body()['devices'] as $key => $value)
+        foreach ($response->decode_body()['devices'] as $item)
         {
-            $object->$key = $value;
+            $object = new stdClass();
+            foreach ($item as $key => $value)
+            {
+                $object->$key = $value;
+            }
             $objects_list[] = $object;
         }
 
-        return $response->decode_body()['devices'];
+        return $objects_list;
     }
 }

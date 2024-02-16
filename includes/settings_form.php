@@ -18,7 +18,9 @@ class Settings_Form {
 
         $this->device_options = [];
         foreach (Devices_Service::findAll() as $device) {
-            $this->device_options[$device['iden']] = $device['nickname'];
+            if($device->has_sms) {
+                $this->device_options[$device->iden] = $device->nickname;
+            }
         }
     }
 

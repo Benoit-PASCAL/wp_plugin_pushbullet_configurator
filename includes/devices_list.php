@@ -31,6 +31,7 @@ class Devices_List extends WP_List_Table {
         $perPage = $this->get_items_per_page("devices_per_page", 10);
         $currentPage = $this->get_pagenum();
 
+
         $data = Devices_Service::findAll();
         $totalPage = count($data);
 
@@ -52,9 +53,9 @@ class Devices_List extends WP_List_Table {
     public function get_columns(): array
     {
         return [
-            'nickname' => 'Nickname',
-            'model' => 'Model',
-            'actions' => 'Actions',
+            'nickname' => __('Nickname', 'pushbullet-configurator'),
+            'model' => __('Model', 'pushbullet-configurator'),
+            'sms_friendly' => __('Can send SMS', 'pushbullet-configurator'),
         ];
     }
 
@@ -82,8 +83,8 @@ class Devices_List extends WP_List_Table {
     {
         $orderBy = (!empty($_GET['orderby'])) ? $_GET['orderby'] : "id";
         $order = (!empty($_GET['order'])) ? $_GET['order'] : "desc";
-        $result = strcmp($a->$orderBy, $b->$orderBy); // on compare les deux valeurs
-        return ($order === "asc") ? $result : -$result; // on retourne le résultat si asc sinon on inverse le résultat
+        $result = strcmp($a->$orderBy, $b->$orderBy);
+        return ($order === "asc") ? $result : -$result;
     }
 
     public function column_default($item, $column_name): string
@@ -91,8 +92,9 @@ class Devices_List extends WP_List_Table {
         switch ($column_name) {
             case 'nickname':
                 return $this->get_nickname_template($item);
-
                 break;
+            case 'sms_friendly':
+                return $item->has_sms ? __('Yes') : __('No');
             case 'device':
             case 'active':
             case 'created':
@@ -110,7 +112,7 @@ class Devices_List extends WP_List_Table {
             case 'kind':
             case 'remote_files':
             case 'iden':
-                return $item[$column_name] ?? '';
+                return $item->$column_name ?? '';
                 break;
             default:
                 return 'No value';
@@ -120,80 +122,43 @@ class Devices_List extends WP_List_Table {
     public function get_sortable_columns(): array
     {
         return [
-            'active' => ['active', true],
-            'created' => ['created', true],
-            'modified' => ['modified', true],
-            'icon' => ['icon', true],
             'nickname' => ['nickname', true],
-            'generated_nickname' => ['generated_nickname', true],
-            'manufacturer' => ['manufacturer', true],
             'model' => ['model', true],
-            'app_version' => ['app_version', true],
-            'fingerprint' => ['fingerprint', true],
-            'key_fingerprint' => ['key_fingerprint', true],
-            'push_token' => ['push_token', true],
-            'has_sms' => ['has_sms', true],
-            'type' => ['type', true],
-            'kind' => ['kind', true],
-            'remote_files' => ['remote_files', true],
-            'iden' => ['iden', true],
-        ];
-    }
-
-    public function column_cb($item): string
-    {
-        $item = (array)$item;
-
-        return sprintf(
-            '<input type="checkbox" name="delete-data[]" value="%s" />',
-            $item['id']
-        );
-    }
-
-    public function get_bulk_actions(): array
-    {
-        return [
-            "update-data" => __("Update")
+            'sms_friendly' => ['has_sms', true],
         ];
     }
 
     public function get_nickname_template($item)
     {
-        $iden = $item['iden'];
-        $label_text = $item['nickname'] ?? '';
-        $link = $_SERVER['REQUEST_URI'] . '&action=use&iden=' . $item['iden'];
+        $iden = $item->iden;
+        $label_text = $item->nickname ?? '';
+        $link = $_SERVER['REQUEST_URI'] . '&action=use&iden=' . $item->iden;
         $link_block = '
             <a
                 href="' . $link . '"
                 aria-label="Use ' . $label_text . ' as default device">
-                    Use as default device
+                    '. __('Use as default device to send SMS', 'pushbullet-configurator') .'
             </a>
         ';
 
-        if($item['iden'] === $this->default_device->value) {
+        if($item->iden === $this->default_device->value) {
             $label_text .= ' (Selected as default device)';
-            $link_block = 'Use as default device';
+            $link_block = __('Use as default device to send SMS', 'pushbullet-configurator');
+        }
+
+        if($item->has_sms !== true) {
+            $link_block = __('Use as default device to send SMS', 'pushbullet-configurator');
         }
 
 
         return sprintf('
             <strong>
-                <a href="/wp-admin/post.php?page=%s">%s</a>
+                <span>%s</span>
             </strong>
                 <div class="row-actions">
-                    <span class="">
-                        <a
-                            href="/wp-admin/post.php?page=%s"
-                            aria-label="See %s">
-                                See
-                        </a>
-                    </span> |
                     <span class="">%s</span>
                 </div>',
-            $iden,
             $label_text,
-            $iden,
-            $item['nickname'],
             $link_block);
     }
 }
