@@ -19,9 +19,12 @@ class Admin_Pushes
                         'body' => $body
                     );
 
-                    Pushes_Service::create($data);
-
-                    echo "<div class='notice notice-success is-dismissible'><p>" . __('Push sent') . "</p></div>";
+                    $response = Pushes_Service::create($data);
+                    if(is_wp_error($response)) {
+                        echo "<div class='notice notice-error is-dismissible'><p>" . $response->get_error_message() . "</p></div>";
+                    } else {
+                        echo "<div class='notice notice-success is-dismissible'><p>" . __('Push sent') . "</p></div>";
+                    }
                 } else {
                     if(isset($_POST['email']) && empty($_POST['email'])) {
                         echo "<div class='notice notice-error is-dismissible'><p>" . __('Email is required') . "</p></div>";

@@ -38,10 +38,10 @@ class Tracking_Service
         $device_iden = Settings_Service::find_default_device()->value;
 
         if($message == "" || $recipients == "" || $device_iden == "") {
-            return new WP_Error('error', 'Please configure the plugin first', array('status' => 412));
+            return new WP_Error('error', 'Alert could not be sent : Some fields were empty.', array('status' => 412));
         }
 
-        Text_Service::create([
+        $response = Text_Service::create([
             "data" => [
                 "message" => $message,
                 "addresses" => [$recipients],
@@ -49,6 +49,10 @@ class Tracking_Service
             ],
             "iden" => $device_iden
         ]);
+
+        if(is_wp_error($response)) {
+            return $response;
+        }
 
         return rest_ensure_response('it worked');
     }
@@ -60,12 +64,12 @@ class Tracking_Service
         $device_iden = Settings_Service::find_default_device()->value;
 
         if($message == "" || $recipients == "" || $device_iden == "") {
-            return new WP_Error('error', 'Please configure the plugin first', array('status' => 412));
+            return new WP_Error('error', 'Alert could not be sent : Some fields were empty.', array('status' => 412));
         }
 
         $mail = User_Service::get_data()['email'];
 
-        Pushes_Service::create(
+        $response = Pushes_Service::create(
             [
                 "type" => "note",
                 "title" => "Alert",
@@ -73,6 +77,10 @@ class Tracking_Service
                 "email" => $mail,
             ],
         );
+
+        if(is_wp_error($response)) {
+            return $response;
+        }
 
         return rest_ensure_response('it worked');
     }

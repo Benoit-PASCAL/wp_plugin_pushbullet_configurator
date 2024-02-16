@@ -11,17 +11,24 @@ class Admin_Devices
 
         if(isset($_GET['action']) && $_GET['action'] == 'test-alert') {
             if(isset($_GET['type']) && $_GET['type'] == 'sms') {
-                Tracking_Service::send_sms_alert();
-                echo '<div class="notice notice-success is-dismissible"><p>Alert sent</p></div>';
+                $response = Tracking_Service::send_sms_alert();
+                if(is_wp_error($response)) {
+                    echo '<div class="notice notice-error is-dismissible"><p>' . $response->get_error_message() . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('Alert sent', 'pushbullet-configuration') . '</p></div>';
+                }
             }
             else if(isset($_GET['type']) && $_GET['type'] == 'push') {
-                Tracking_Service::send_push_alert();
-                echo '<div class="notice notice-success is-dismissible"><p>Alert sent</p></div>';
+                $response = Tracking_Service::send_push_alert();
+                if(is_wp_error($response)) {
+                    echo '<div class="notice notice-error is-dismissible"><p>' . $response->get_error_message() . '</p></div>';
+                } else {
+                    echo '<div class="notice notice-success is-dismissible"><p>' . __('Alert sent', 'pushbullet-configuration') . '</p></div>';
+                }
             }
             else {
-                echo '<div class="notice notice-error is-dismissible"><p>An error occurred while trying to send alert</p></div>';
+                echo '<div class="notice notice-error is-dismissible"><p>' . __('An error occurred while trying to send alert', 'pushbullet-configuration') . '</p></div>';
             }
-
         }
 
         $table = new Devices_List();
