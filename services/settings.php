@@ -22,10 +22,10 @@ class Settings_Service
     public static function init_db(): void
     {
         global $wpdb;
-        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "token"]);
-        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "phone_number"]);
-        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "message"]);
-        $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => "default_device"]);
+        $settings = ['token', 'phone_number', 'message', 'default_device', 'default_alert_type'];
+        foreach ($settings as $setting) {
+            $wpdb->insert("{$wpdb->prefix}pushbullet_config", ["name" => $setting]);
+        }
     }
 
     public static function empty_db(): void
@@ -68,6 +68,12 @@ class Settings_Service
     {
         global $wpdb;
         return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}pushbullet_config WHERE name = 'default_device'")[0];
+    }
+
+    public static function find_default_alert_type(): stdClass
+    {
+        global $wpdb;
+        return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}pushbullet_config WHERE name = 'default_alert_type'")[0];
     }
 
     public static function set_default_device($iden): void
