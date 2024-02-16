@@ -6,7 +6,7 @@
             ?>
         </label>
     </h3>
-    <a href="http://my-local-wordpress.lndo.site/wp-admin/admin.php?page=pushbullet-configurator&tab=pushes" class="page-title-action"><?= _('Cancel') ?></a>
+    <a href="http://my-local-wordpress.lndo.site/wp-admin/admin.php?page=pushbullet-configurator&tab=pushes" class="page-title-action"><?php _e('Cancel') ?></a>
     <form action="" method="post">
         <input type="hidden" name="action" id="action" value="create">
         <input type="hidden" name="page" id="page" value="pushbullet-configurator">
@@ -51,6 +51,6 @@
                 </tr>
             </tbody>
         </table>
-        <input class="button button-primary" type="submit" id="submit" value="Send">
+        <button class="button button-primary" type="submit" id="submit" value="Seend"><?php _e('Send', 'pushbullet-configurator') ?></button>
     </form>
 </div>

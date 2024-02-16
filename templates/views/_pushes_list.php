@@ -7,9 +7,11 @@
             ?>
         </label>
     </h3>
-    <a href="<?= $_SERVER['REQUEST_URI'] ?>&action=create" class="page-title-action">
-        <?php _e('Envoyer un push', 'pushbullet-configurator'); ?>
-    </a>
+    <form action="" method="post" style="display: inline-block">
+        <button type="submit" name="action" value="create" class="page-title-action">
+            <?php _e('Send a push', 'pushbullet-configurator'); ?>
+        </button>
+    </form>
     <?php $table->prepare_items(); ?>
     <form id="tables-filter" method="post">
         <?php $table->display(); ?>
