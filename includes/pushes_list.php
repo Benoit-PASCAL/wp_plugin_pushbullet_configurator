@@ -10,8 +10,8 @@ class Pushes_List extends WP_List_Table {
     {
         parent::__construct(
             array(
-                "singular" => __("Device"),
-                "plural" => __("Devices")
+                "singular" => __("Push"),
+                "plural" => __("Pushes")
             )
         );
     }
@@ -49,41 +49,18 @@ class Pushes_List extends WP_List_Table {
     public function get_columns(): array
     {
         return [
-            'title' => 'Title',
-            'body' => 'Body',
+            'cb' => '<input type="checkbox" />',
+            'title' => __('Title', 'pushbullet-configurator'),
+            'body' => __('Body', 'pushbullet-configurator'),
+            'created' => __('Created', 'pushbullet-configurator'),
+            'modified' => __('Modified', 'pushbullet-configurator'),
         ];
     }
 
     public function get_hidden_columns(): array
     {
         return [
-            'iden' => 'Iden',
-            'active' => 'Active',
-            'created' => 'Created',
-            'modified' => 'Modified',
-            'type' => 'Type',
-            'dismissed' => 'Dismissed',
-            'guid' => 'Guid',
-            'direction' => 'Direction',
-            'sender_iden' => 'Sender Iden',
-            'sender_email' => 'Sender Email',
-            'sender_email_normalized' => 'Sender Email Normalized',
-            'sender_name' => 'Sender Name',
-            'receiver_iden' => 'Receiver Iden',
-            'receiver_email' => 'Receiver Email',
-            'receiver_email_normalized' => 'Receiver Email Normalized',
-            'target_device_iden' => 'Target Device Iden',
-            'source_device_iden' => 'Source Device Iden',
-            'client_iden' => 'Client Iden',
-            'channel_iden' => 'Channel Iden',
-            'awake_app_guids' => 'Awake App Guids',
-            'url' => 'Url',
-            'file_name' => 'File Name',
-            'file_type' => 'File Type',
-            'file_url' => 'File Url',
-            'image_url' => 'Image Url',
-            'image_width' => 'Image Width',
-            'image_height' => 'Image Height'
+            'iden' => 'iden'
         ];
     }
 
@@ -91,8 +68,8 @@ class Pushes_List extends WP_List_Table {
     {
         $orderBy = (!empty($_GET['orderby'])) ? $_GET['orderby'] : "id";
         $order = (!empty($_GET['order'])) ? $_GET['order'] : "desc";
-        $result = strcmp($a->$orderBy, $b->$orderBy); // on compare les deux valeurs
-        return ($order === "asc") ? $result : -$result; // on retourne le résultat si asc sinon on inverse le résultat
+        $result = strcmp($a->$orderBy, $b->$orderBy);
+        return ($order === "asc") ? $result : -$result;
     }
 
     public function column_default($item, $column_name): string
@@ -100,51 +77,41 @@ class Pushes_List extends WP_List_Table {
         switch ($column_name) {
             case 'title':
                 return sprintf(
-                    '<a href="%s">%s</a>
+                    '<strong>%s</strong>
                             <div class="row-actions">
                                 <span class="delete">
                                     <a
                                         href="%s"
-                                        aria-label="Delete push">
-                                            Delete
+                                        aria-label="%s">
+                                            %s
                                     </a>
                                 </span>
                             </div>',
-                    $_SERVER['REQUEST_URI'] . '&action=edit&iden=' . $item['iden'],
-                    $item[$column_name] ?? '',
-                    $_SERVER['REQUEST_URI'] . '&action=edit&iden=' . $item['iden'],
-                    $_SERVER['REQUEST_URI'] . '&action=delete&iden=' . $item['iden']
-
+                    $item->$column_name ?? '',
+                    $_SERVER['REQUEST_URI'] . '&action=delete&iden=' . $item->iden,
+                    __('Delete push', 'pushbullet-configurator'),
+                    __('Delete', 'pushbullet-configurator'),
                 );
                 break;
             case 'body':
-                return $item[$column_name] ?? '';
+                return $item->$column_name ?? '';
+                break;
+            case 'created':
+            case 'modified':
+                return date('d/m/Y H:i:s', $item->$column_name) ?? '';
                 break;
             default:
-                return 'No value';
+                return __('No value', 'pushbullet-configurator');
         }
     }
 
     public function get_sortable_columns(): array
     {
         return [
-            'active' => ['active', true],
+            'title' => ['title', true],
+            'body' => ['body', true],
             'created' => ['created', true],
             'modified' => ['modified', true],
-            'icon' => ['icon', true],
-            'nickname' => ['nickname', true],
-            'generated_nickname' => ['generated_nickname', true],
-            'manufacturer' => ['manufacturer', true],
-            'model' => ['model', true],
-            'app_version' => ['app_version', true],
-            'fingerprint' => ['fingerprint', true],
-            'key_fingerprint' => ['key_fingerprint', true],
-            'push_token' => ['push_token', true],
-            'has_sms' => ['has_sms', true],
-            'type' => ['type', true],
-            'kind' => ['kind', true],
-            'remote_files' => ['remote_files', true],
-            'iden' => ['iden', true],
         ];
     }
 
@@ -153,15 +120,15 @@ class Pushes_List extends WP_List_Table {
         $item = (array)$item;
 
         return sprintf(
-            '<input type="checkbox" name="delete-data[]" value="%s" />',
-            $item['id']
+            '<input type="checkbox" name="iden[]" value="%s" />',
+            $item['iden']
         );
     }
 
     public function get_bulk_actions(): array
     {
         return [
-            "update-data" => __("Update")
+            "delete" => __("Delete")
         ];
     }
 }

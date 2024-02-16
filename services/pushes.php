@@ -24,13 +24,17 @@ class Pushes_Service {
         $objects_list = [];
         $object = new stdClass();
 
-        foreach ($response->decode_body()['pushes'] as $key => $value)
+        foreach ($response->decode_body()['pushes'] as $item)
         {
-            $object->$key = $value;
+            $object = new stdClass();
+            foreach ($item as $key => $value)
+            {
+                $object->$key = $value;
+            }
             $objects_list[] = $object;
         }
 
-        return $response->decode_body()['pushes'];
+        return $objects_list;
     }
 
     static public function create($data): void
@@ -46,7 +50,20 @@ class Pushes_Service {
         );
     }
 
-    static public function delete($iden): void
+    static public function delete($idens): void
+    {
+        if(!is_array($idens))
+        {
+            $idens = [$idens];
+        }
+
+        foreach ($idens as $iden)
+        {
+            self::delete_single($iden);
+        }
+    }
+
+    static public function delete_single($iden): void
     {
         WpOrg\Requests\Requests::delete(
             'https://api.pushbullet.com/v2/pushes/' . $iden,
