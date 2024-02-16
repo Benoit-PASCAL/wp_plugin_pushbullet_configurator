@@ -2,9 +2,9 @@
 /*
 
 Plugin Name: Pushbullet Configurator
-Description: A plugin to link any Pushbullet account to your WordPress website.
+Description: A plugin to receive notification or SMS on your Android phone, using the Pushbullet service whenever a form is submitted on your WordPress site.
 Author: Benoît PASCAL
-Version: 1.0
+Version: 0.1
 
 Author URI: http://www.p-ben.com
 Requires at least: 6.2
