@@ -16,7 +16,7 @@ class Pushes_Service {
             )
         );
 
-        if($response->decode_body()['pushes'] == null)
+        if(array_key_exists('error',$response->decode_body()) || $response->decode_body()['pushes'] == null)
         {
             return [];
         }

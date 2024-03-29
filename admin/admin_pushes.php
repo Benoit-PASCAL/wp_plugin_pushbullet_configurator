@@ -2,11 +2,12 @@
 
 class Admin_Pushes
 {
-    public function render_content(): void
+    public static function render_content(): void
     {
         if(isset($_GET['action']) || isset($_POST['action'])) {
+            $action = $_GET['action'] ?? $_POST['action'];
 
-            if($_GET['action'] == 'create' || $_POST['action'] == 'create') {
+            if($action == 'create') {
                 if(isset($_POST['email']) && isset($_POST['title']) && isset($_POST['body']) && !empty($_POST['email']) && !empty($_POST['title']) && !empty($_POST['body'])) {
                     $email = sanitize_email($_POST['email']);
                     $title = sanitize_text_field($_POST['title']);
@@ -43,7 +44,7 @@ class Admin_Pushes
                 }
             }
 
-            if($_GET['action'] == 'delete' || $_POST['action'] == 'delete') {
+            if($action == 'delete') {
                 if((isset($_GET['iden']) && !empty($_GET['iden'])) || (isset($_POST['iden']) && !empty($_POST['iden'])) ) {
                     $iden = $_POST['iden'] ?? sanitize_text_field($_GET['iden']);
                     Pushes_Service::delete($iden);

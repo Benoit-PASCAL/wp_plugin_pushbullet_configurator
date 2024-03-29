@@ -2,7 +2,7 @@
 
 class Admin_Settings
 {
-    public function render_content(): void
+    public static function render_content(): void
     {
         $form = new Settings_Form();
         $form->prepare_items();
@@ -10,7 +10,7 @@ class Admin_Settings
         require_once PUSHBULLET_PLUGIN_DIR . 'templates/views/_settings.php';
     }
 
-    public function save(): bool
+    public static function save(): bool
     {
         $settings = new Settings_Service();
         foreach ($_POST as $key => $value) {

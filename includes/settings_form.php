@@ -16,7 +16,7 @@ class Settings_Form {
 
         $this->device_options = [];
         foreach (Devices_Service::findAll() as $device) {
-            if($device->has_sms) {
+            if(property_exists($device, 'has_sms')) {
                 $this->device_options[$device->iden] = $device->nickname;
             }
         }

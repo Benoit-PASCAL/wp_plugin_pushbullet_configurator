@@ -94,7 +94,7 @@ class Devices_List extends WP_List_Table {
                 return $this->get_nickname_template($item);
                 break;
             case 'sms_friendly':
-                return $item->has_sms ? __('Yes') : __('No');
+                return property_exists($item, 'has_sms') ? __('Yes') : __('No');
             case 'device':
             case 'active':
             case 'created':
@@ -146,7 +146,7 @@ class Devices_List extends WP_List_Table {
             $link_block = __('Use as default device to send SMS', 'pushbullet-configurator');
         }
 
-        if($item->has_sms !== true) {
+        if(!property_exists($item, 'has_sms')) {
             $link_block = __('Use as default device to send SMS', 'pushbullet-configurator');
         }
 

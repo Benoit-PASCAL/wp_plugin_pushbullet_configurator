@@ -2,7 +2,7 @@
 
 class Admin_Devices
 {
-    public function render_content(): void
+    public static function render_content(): void
     {
         if(isset($_GET['action']) && $_GET['action'] == 'use' && isset($_GET['iden'])) {
             $iden = sanitize_text_field($_GET['iden']);

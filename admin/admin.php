@@ -91,7 +91,7 @@ class AdminMenu
                 <div class="post-body">
                     <div class="postbox">
                         <div class="inside">
-                            <?php call_user_func($this->menu_tabs[$this->current_tab]['render_callback']) ?>
+                            <?php call_user_func($this->menu_tabs[$this->current_tab]['render_callback']); ?>
                         </div>
                     </div>
                 </div>

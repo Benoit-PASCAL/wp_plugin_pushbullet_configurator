@@ -16,7 +16,7 @@ class Devices_Service {
             )
         );
 
-        if($response->decode_body()['devices'] == null)
+        if(array_key_exists('error',$response->decode_body()) || $response->decode_body()['devices'] == null)
         {
             return [];
         }
