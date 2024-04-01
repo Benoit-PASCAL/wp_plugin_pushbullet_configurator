@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit; 
+}
+
 class Settings_Service
 {
     public static function create_db(): void

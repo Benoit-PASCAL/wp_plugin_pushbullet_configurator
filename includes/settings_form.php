@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit; 
+}
+
 class Settings_Form {
 
     public array $items;

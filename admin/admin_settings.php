@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit; 
+}
+
 class Admin_Settings
 {
     public static function render_content(): void

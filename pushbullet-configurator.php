@@ -12,6 +12,10 @@ Requires PHP: 7.4
 
 */
 
+if (!defined('ABSPATH')) {
+    exit; 
+}
+
 class PushbulletPlugin
 {
     public function __construct()
